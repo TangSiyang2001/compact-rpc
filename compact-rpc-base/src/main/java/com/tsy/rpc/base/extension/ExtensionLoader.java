@@ -2,6 +2,7 @@ package com.tsy.rpc.base.extension;
 
 import com.tsy.rpc.base.exception.NoSuchExtensionException;
 import com.tsy.rpc.base.extension.annotation.SPI;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,6 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Steven.T
  * @date 2022/2/17
  */
+@Slf4j
 public class ExtensionLoader<T> {
 
     private static final String META_INF_PATH = "META-INF/extensions/";
@@ -125,8 +127,7 @@ public class ExtensionLoader<T> {
                 EXTENSION_INSTANCES_CACHE.putIfAbsent(clazz, clazz.getConstructor().newInstance());
                 instance = EXTENSION_INSTANCES_CACHE.get(clazz);
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                //TODO:引入日志
-                e.printStackTrace();
+                log.error(e.getCause().getMessage());
             }
         }
         return (T) instance;
@@ -165,7 +166,7 @@ public class ExtensionLoader<T> {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getCause().getMessage());
         }
     }
 
@@ -193,7 +194,7 @@ public class ExtensionLoader<T> {
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            log.error(e.getCause().getMessage());
         }
     }
 }
