@@ -1,6 +1,7 @@
 package com.tsy.rpc.remote.message;
 
 import com.tsy.rpc.base.message.Message;
+import com.tsy.rpc.base.message.MessageType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -16,4 +17,13 @@ public class RpcResponse extends Message {
 
     private Exception exception;
 
+    public RpcResponse(Object value) {
+        super.setType(MessageType.RPC_RESPONSE);
+        this.value = value;
+    }
+
+    public RpcResponse(Exception exception){
+        super.setType(MessageType.RPC_RESPONSE);
+        this.exception = exception;
+    }
 }

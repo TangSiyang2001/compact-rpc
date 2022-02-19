@@ -8,4 +8,5 @@ import com.tsy.rpc.base.extension.annotation.SPI;
  */
 @SPI
 public interface ServiceDiscovery {
+
 }
