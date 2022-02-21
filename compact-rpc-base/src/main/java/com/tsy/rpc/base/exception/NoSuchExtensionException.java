@@ -5,6 +5,7 @@ package com.tsy.rpc.base.exception;
  * @date 2022/2/18
  */
 public class NoSuchExtensionException extends RuntimeException{
+
     public NoSuchExtensionException() {
         this("No such an extension");
     }

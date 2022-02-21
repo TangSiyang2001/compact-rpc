@@ -1,6 +1,6 @@
 package com.tsy.rpc.base.utils;
 
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Steven.T
@@ -12,9 +12,9 @@ public class SequenceIdUtils {
         throw new IllegalStateException("This is a util class.");
     }
 
-    public static final AtomicLong ID = new AtomicLong();
+    public static final AtomicInteger ID = new AtomicInteger();
 
-    public static long nextId(){
+    public static int nextId(){
         return ID.getAndIncrement();
     }
 }

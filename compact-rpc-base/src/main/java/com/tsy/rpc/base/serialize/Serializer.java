@@ -11,7 +11,22 @@ import com.tsy.rpc.base.extension.annotation.SPI;
 @SPI
 public interface Serializer {
 
-    byte[] serialize(Object obj);
+    /**
+     * 序列化
+     *
+     * @param t 序列化对象
+     * @param <T> 序列化对象类型
+     * @return 序列化结果
+     */
+    <T> byte[] serialize(T t);
 
+    /**
+     * 反序列化
+     *
+     * @param bytes 反序列化对象
+     * @param clazz 反序列化class
+     * @param <T> 反序列化类型
+     * @return 反序列化结果
+     */
     <T> T deserialize(byte[] bytes, Class<T> clazz);
 }

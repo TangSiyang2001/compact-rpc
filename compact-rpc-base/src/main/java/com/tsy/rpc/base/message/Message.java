@@ -13,8 +13,7 @@ public abstract class Message implements Serializable {
 
     private static final long serialVersionUID = 42L;
 
-    private long sequenceId;
+    private int sequenceId;
 
     private byte type;
-
 }

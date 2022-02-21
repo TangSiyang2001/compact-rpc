@@ -7,7 +7,7 @@ import com.tsy.rpc.base.extension.annotation.SPI;
  * @date 2022/2/19
  */
 @SPI
-public interface Compress {
+public interface Compressor {
 
     /**
      * 压缩

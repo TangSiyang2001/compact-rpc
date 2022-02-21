@@ -1,7 +1,6 @@
-package com.tsy.rpc.remote.message;
+package com.tsy.rpc.message;
 
 import com.tsy.rpc.base.message.Message;
-import com.tsy.rpc.base.message.MessageType;
 import com.tsy.rpc.base.utils.SequenceIdUtils;
 import lombok.Builder;
 import lombok.Data;
@@ -48,7 +47,7 @@ public class RpcRequest extends Message {
     public RpcRequest(String interfaceName, String methodName, Class<?> returnType, Class<?>[] paramTypes,
                       Object[] paramValues, String version, String group) {
 
-        super.setType(MessageType.RPC_REQUEST);
+        super.setType(MessageType.RPC_REQUEST.getType());
         super.setSequenceId(SequenceIdUtils.nextId());
         this.interfaceName = interfaceName;
         this.methodName = methodName;
