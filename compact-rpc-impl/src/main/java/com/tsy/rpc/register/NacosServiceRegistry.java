@@ -2,6 +2,7 @@ package com.tsy.rpc.register;
 
 import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.pojo.Instance;
+import com.tsy.rpc.base.factory.SingletonFactory;
 import com.tsy.rpc.base.register.ServiceRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -16,11 +17,14 @@ import java.util.Objects;
  */
 @Slf4j
 public class NacosServiceRegistry implements ServiceRegistry {
+
+    private final NacosServiceProvider serviceProvider = SingletonFactory.getInstance(NacosServiceProvider.class);
+
     @Override
     public void registerService(String serviceName, InetSocketAddress inetSocketAddress) {
         checkServiceInfo(serviceName, inetSocketAddress);
         try {
-            NacosUtils.registerInstance(serviceName, inetSocketAddress.getHostName(), inetSocketAddress.getPort());
+            serviceProvider.registerInstance(serviceName, inetSocketAddress.getHostName(), inetSocketAddress.getPort());
         } catch (NacosException e) {
             log.error("Error occurred when registering service {}.\nError:code:{},msg:{}.",
                     serviceName, e.getErrCode(), e.getErrMsg());
@@ -31,12 +35,12 @@ public class NacosServiceRegistry implements ServiceRegistry {
     public void deregisterService(String serviceName, InetSocketAddress inetSocketAddress) {
         checkServiceInfo(serviceName, inetSocketAddress);
         try {
-            final List<Instance> instances = NacosUtils.getAllInstance(serviceName);
+            final List<Instance> instances = serviceProvider.getAllInstance(serviceName);
             InetSocketAddress address;
             for (Instance instance : instances) {
                 address = new InetSocketAddress(instance.getIp(), instance.getPort());
                 if (Objects.equals(address, inetSocketAddress)) {
-                    NacosUtils.deregisterInstance(serviceName, address.getHostName(), address.getPort());
+                    serviceProvider.deregisterInstance(serviceName, address.getHostName(), address.getPort());
                 }
             }
         } catch (NacosException e) {

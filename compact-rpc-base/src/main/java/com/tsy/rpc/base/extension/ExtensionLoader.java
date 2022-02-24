@@ -44,14 +44,14 @@ public class ExtensionLoader<T> {
     /**
      * 当前加载器的实现类对象实例缓存
      */
-    private final Map<String, Holder<Object>> cachedInstances = new ConcurrentHashMap<>(16);
+    private final Map<String, BeanHolder<Object>> cachedInstances = new ConcurrentHashMap<>(16);
 
     /**
      * 关联扩展名和类型
      * 在META-INF下，例如loadBalance=com.tsy.rpc.loadbalance.loadbalancer.ConsistentHashLoadBalance
      * loadBalance即扩展名
      */
-    private final Holder<Map<String, Class<?>>> cachedClassesHolder = new Holder<>();
+    private final BeanHolder<Map<String, Class<?>>> cachedClassesHolder = new BeanHolder<>();
 
     private ExtensionLoader(Class<?> clazz) {
         this.targetType = clazz;
@@ -95,10 +95,10 @@ public class ExtensionLoader<T> {
         if (name == null || name.trim().length() == 0) {
             throw new IllegalArgumentException("Extension name should not be blank.");
         }
-        Holder<Object> holder = cachedInstances.get(name);
+        BeanHolder<Object> holder = cachedInstances.get(name);
         if (holder == null) {
             //创建相应缓存
-            cachedInstances.putIfAbsent(name, new Holder<>());
+            cachedInstances.putIfAbsent(name, new BeanHolder<>());
             holder = cachedInstances.get(name);
         }
         Object instance = holder.get();

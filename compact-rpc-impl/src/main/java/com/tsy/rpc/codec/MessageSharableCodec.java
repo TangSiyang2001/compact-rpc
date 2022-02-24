@@ -8,7 +8,7 @@ import com.tsy.rpc.base.message.Message;
 import com.tsy.rpc.base.serialize.CodecType;
 import com.tsy.rpc.base.serialize.Serializer;
 import com.tsy.rpc.config.RpcConfig;
-import com.tsy.rpc.constant.Constant;
+import com.tsy.rpc.constant.GlobalConstant;
 import com.tsy.rpc.message.MessageType;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -28,8 +28,8 @@ public class MessageSharableCodec extends MessageToMessageCodec<ByteBuf, Message
     @Override
     protected void encode(ChannelHandlerContext ctx, Message msg, List<Object> out) throws Exception {
         final ByteBuf buffer = ctx.alloc().buffer();
-        buffer.writeBytes(Constant.MAGIC_CODE_CONTENT);
-        buffer.writeByte(Constant.PROTOCOL_VERSION);
+        buffer.writeBytes(GlobalConstant.MAGIC_CODE_CONTENT);
+        buffer.writeByte(GlobalConstant.PROTOCOL_VERSION);
         buffer.writeByte(msg.getType());
         //TODO:尝试实现可选的压缩方式
         final byte compressType = CompressType.GZIP.getType();
@@ -76,7 +76,7 @@ public class MessageSharableCodec extends MessageToMessageCodec<ByteBuf, Message
         if (buf == null) {
             throw new IllegalArgumentException("buf should be not null");
         }
-        final byte[] magicCodeContent = Constant.MAGIC_CODE_CONTENT;
+        final byte[] magicCodeContent = GlobalConstant.MAGIC_CODE_CONTENT;
         final int length = magicCodeContent.length;
         byte[] magicCode = new byte[length];
         buf.readBytes(magicCode);
@@ -92,7 +92,7 @@ public class MessageSharableCodec extends MessageToMessageCodec<ByteBuf, Message
             throw new IllegalArgumentException("buf should be not null");
         }
         byte version = buf.readByte();
-        if (version != Constant.PROTOCOL_VERSION) {
+        if (version != GlobalConstant.PROTOCOL_VERSION) {
             throw new CodecException("Version does not adapt");
         }
     }

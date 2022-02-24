@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2022/2/20
  */
 @Slf4j
-public class NacosUtils {
+public class NacosServiceProvider {
 
     /**
      * TODO:调整为可配置
@@ -34,10 +34,6 @@ public class NacosUtils {
         namingService = loadNamingService();
     }
 
-    private NacosUtils() {
-        throw new IllegalStateException("This is a util class");
-    }
-
     private static NamingService loadNamingService() {
         try {
             return NamingFactory.createNamingService(SERVER_ADDRESS);
@@ -46,7 +42,7 @@ public class NacosUtils {
         }
     }
 
-    public static void registerInstance(String serviceName, String hostName,int port) throws NacosException {
+    public void registerInstance(String serviceName, String hostName,int port) throws NacosException {
         namingService.registerInstance(serviceName, hostName, port);
         InetSocketAddress address =new InetSocketAddress(hostName,port);
         List<InetSocketAddress> inetSocketAddresses;
@@ -60,15 +56,15 @@ public class NacosUtils {
         }
     }
 
-    public static List<Instance> getAllInstance(String serviceName) throws NacosException {
+    public List<Instance> getAllInstance(String serviceName) throws NacosException {
         return namingService.getAllInstances(serviceName);
     }
 
-    public static void deregisterInstance(String serviceName,String hostName,int port) throws NacosException {
+    public void deregisterInstance(String serviceName,String hostName,int port) throws NacosException {
         namingService.deregisterInstance(serviceName,hostName,port);
     }
 
-    public static void clearAllRegistries() throws NacosException {
+    public void clearAllRegistries() throws NacosException {
         if (MapUtils.isEmpty(SERVICE_INSTANCES_MAP)) {
             for (Map.Entry<String, List<InetSocketAddress>> entry : SERVICE_INSTANCES_MAP.entrySet()) {
                 for (InetSocketAddress address : entry.getValue()) {

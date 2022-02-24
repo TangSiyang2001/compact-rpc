@@ -2,6 +2,7 @@ package com.tsy.rpc.register;
 
 import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.pojo.Instance;
+import com.tsy.rpc.base.factory.SingletonFactory;
 import com.tsy.rpc.base.loadbalance.LoadBalancer;
 import com.tsy.rpc.base.register.ServiceDiscovery;
 import com.tsy.rpc.loadbalance.RandomBalancer;
@@ -20,6 +21,8 @@ public class NacosServiceDiscovery implements ServiceDiscovery {
 
     private LoadBalancer loadBalancer;
 
+    private final NacosServiceProvider serviceProvider = SingletonFactory.getInstance(NacosServiceProvider.class);
+
     public NacosServiceDiscovery(LoadBalancer loadBalancer) {
         this.loadBalancer = loadBalancer == null ? new RandomBalancer() : loadBalancer;
     }
@@ -31,7 +34,7 @@ public class NacosServiceDiscovery implements ServiceDiscovery {
     @Override
     public InetSocketAddress discoverService(String serviceName) {
         try {
-            final List<Instance> instances = NacosUtils.getAllInstance(serviceName);
+            final List<Instance> instances = serviceProvider.getAllInstance(serviceName);
             final List<InetSocketAddress> addresses = instances.stream()
                     .map(instance -> new InetSocketAddress(instance.getIp(), instance.getPort()))
                     .collect(Collectors.toList());
