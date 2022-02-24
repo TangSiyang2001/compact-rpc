@@ -9,9 +9,10 @@ spi机制
 ​	ExtensionLoader的实现
 
 客户端
+  动态代理
 
 服务端
-
+  
 注册中心
 
 ​	nacos sdk
@@ -21,18 +22,13 @@ spi机制
 自定义协议
 
 序列化/反序列化实现
+    4B  magic code（魔法数）   1B messageType（消息类型） 1B version（版本） 1B compress（压缩类型） 1B codec（序列化类型）  4B  requestId（请求的Id）  4B full length（消息长度）    
 
 负载均衡
-
+  
 spring扩展
-
 ​	
 
-#### 使用说明
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
 
 #### 参与贡献
 
