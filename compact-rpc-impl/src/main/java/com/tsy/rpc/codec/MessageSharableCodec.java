@@ -50,7 +50,7 @@ public class MessageSharableCodec extends MessageToMessageCodec<ByteBuf, Message
     }
 
     private byte[] compress(byte compressType,byte[] bytes){
-        final Compressor compressor = loadCompressByType(compressType);
+        final Compressor compressor = loadCompressorByType(compressType);
         return compressor.compress(bytes);
     }
 
@@ -98,7 +98,7 @@ public class MessageSharableCodec extends MessageToMessageCodec<ByteBuf, Message
     }
 
     private byte[] deCompress(byte[] content, byte compressType) {
-        final Compressor compressor = loadCompressByType(compressType);
+        final Compressor compressor = loadCompressorByType(compressType);
         return compressor.decompress(content);
     }
 
@@ -113,7 +113,7 @@ public class MessageSharableCodec extends MessageToMessageCodec<ByteBuf, Message
         }
     }
 
-    private Compressor loadCompressByType(byte compressType){
+    private Compressor loadCompressorByType(byte compressType){
         return ExtensionLoader.getExtensionLoader(Compressor.class)
                 .getExtension(CompressType.getCompressName(compressType));
     }

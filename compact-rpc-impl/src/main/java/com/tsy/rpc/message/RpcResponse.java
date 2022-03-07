@@ -1,6 +1,7 @@
 package com.tsy.rpc.message;
 
 import com.tsy.rpc.base.message.Message;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -9,8 +10,11 @@ import lombok.EqualsAndHashCode;
  * @date 2022/2/19
  */
 @Data
+@Builder
 @EqualsAndHashCode(callSuper = true)
 public class RpcResponse extends Message {
+
+    private int sequenceId;
 
     private Object value;
 
