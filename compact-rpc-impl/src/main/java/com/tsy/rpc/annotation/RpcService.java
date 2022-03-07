@@ -13,4 +13,5 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 public @interface RpcService {
     //TODO:设计内容
+    String name() default "";
 }

@@ -51,7 +51,7 @@ public class NettyRpcServer extends AbstractServer {
                                     .addLast(new IdleStateHandler(30, 0, 0, TimeUnit.SECONDS))
                                     .addLast(new ProtocolFrameDecoder())
                                     .addLast(new MessageSharableCodec())
-                                    .addLast(serviceHandlerGroup,new NettyRpcRequestHandler());
+                                    .addLast(serviceHandlerGroup, new NettyRpcRequestHandler());
                         }
                     })
                     .option(ChannelOption.SO_BACKLOG, 128)
