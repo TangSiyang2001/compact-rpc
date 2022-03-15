@@ -1,6 +1,5 @@
 package com.tsy.rpc.base.thread;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,7 +14,6 @@ import java.util.concurrent.TimeUnit;
  * @date 2022/2/24
  */
 @Data
-@Builder
 @NoArgsConstructor
 public class ThreadPoolConfig {
 

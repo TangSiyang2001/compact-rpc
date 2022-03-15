@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
+ * 所调用的服务的相关信息
+ *
  * @author Steven.T
  * @date 2022/2/22
  */
 @Data
 @AllArgsConstructor
-public class RpcServiceConfig {
+public class RpcServiceInfo {
 
     /**
      * 当接口有多实现时，应用group区分

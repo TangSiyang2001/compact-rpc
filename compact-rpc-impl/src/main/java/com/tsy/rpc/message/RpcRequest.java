@@ -19,6 +19,11 @@ import org.apache.commons.lang3.StringUtils;
 public class RpcRequest extends Message {
 
     /**
+     * 验证合法性的请求id
+     */
+    private String requestId;
+
+    /**
      * 调用接口的全限定名
      */
     private String interfaceName;
@@ -47,11 +52,12 @@ public class RpcRequest extends Message {
 
     private String group;
 
-    public RpcRequest(String interfaceName, String methodName, Class<?> returnType, Class<?>[] paramTypes,
+    public RpcRequest(String requestId,String interfaceName, String methodName, Class<?> returnType, Class<?>[] paramTypes,
                       Object[] paramValues, String version, String group) {
 
         super.setType(MessageType.RPC_REQUEST.getType());
         super.setSequenceId(SequenceIdUtils.nextId());
+        this.requestId = requestId;
         this.interfaceName = interfaceName;
         this.methodName = methodName;
         this.returnType = returnType;

@@ -45,7 +45,7 @@ public class NettyRpcServer extends AbstractServer {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         // TODO:自定义handler
                         @Override
-                        public void initChannel(SocketChannel ch) throws Exception {
+                        public void initChannel(SocketChannel ch) {
                             ch.pipeline()
                                     //TODO:加入配置项
                                     .addLast(new IdleStateHandler(30, 0, 0, TimeUnit.SECONDS))

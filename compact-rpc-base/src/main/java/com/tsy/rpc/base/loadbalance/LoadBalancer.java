@@ -11,5 +11,10 @@ import java.util.List;
  */
 @SPI
 public interface LoadBalancer {
+    /**
+     * 负载均衡实现服务选择
+     * @param addresses 服务地址列表
+     * @return 服务地址
+     */
     InetSocketAddress selectService(List<InetSocketAddress>addresses);
 }

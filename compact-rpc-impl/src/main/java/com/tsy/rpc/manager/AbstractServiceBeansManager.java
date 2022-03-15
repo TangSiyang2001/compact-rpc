@@ -2,7 +2,7 @@ package com.tsy.rpc.manager;
 
 import com.tsy.rpc.base.exception.ServiceReferenceNotFoundException;
 import com.tsy.rpc.base.register.ServiceRegistry;
-import com.tsy.rpc.config.RpcServiceConfig;
+import com.tsy.rpc.config.RpcServiceInfo;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -25,14 +25,14 @@ public abstract class AbstractServiceBeansManager implements ServiceBeansManager
     public Object getServiceInstance(String serviceName) {
         final Object service = servicesCache.get(serviceName);
         if (service == null) {
-            throw new ServiceReferenceNotFoundException("Service reference not found for name " + serviceName);
+            throw new ServiceReferenceNotFoundException("Service reference not found for name:" + serviceName);
         }
         return service;
     }
 
 
     @Override
-    public void publishService(RpcServiceConfig config) {
+    public void publishService(RpcServiceInfo config) {
         final String serviceName = config.getServiceName();
         registerService(serviceName);
         servicesCache.put(serviceName, config.getServiceInstance());
