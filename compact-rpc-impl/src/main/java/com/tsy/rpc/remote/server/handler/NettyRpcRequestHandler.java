@@ -8,10 +8,13 @@ import com.tsy.rpc.message.RpcResponse;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.handler.timeout.IdleState;
+import io.netty.handler.timeout.IdleStateEvent;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Objects;
 
 /**
  * @author Steven.T
@@ -23,10 +26,10 @@ public class NettyRpcRequestHandler extends SimpleChannelInboundHandler<RpcReque
     private final ServiceBeansManager serviceBeansManager = new DefaultServiceBeansManager();
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, RpcRequest msg) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, RpcRequest msg) {
         final String serviceName = msg.getServiceName();
         final Object result = doInvoke(msg, serviceName);
-        final RpcResponse response = buildResponse(msg.getSequenceId(), result);
+        final RpcResponse response = buildResponse(msg.getSequenceId(), msg.getRequestId(), result);
         if (ctx.channel().isActive() && ctx.channel().isWritable()) {
             ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
         }
@@ -51,21 +54,43 @@ public class NettyRpcRequestHandler extends SimpleChannelInboundHandler<RpcReque
         }
     }
 
-    private RpcResponse buildResponse(int sequenceId, Object data) {
+    private RpcResponse buildResponse(int sequenceId, String requestId, Object data) {
         RpcResponse response;
         if (data instanceof Exception) {
             response = RpcResponse
                     .builder()
-                    .sequenceId(sequenceId)
+                    .requestId(requestId)
+                    .success(false)
                     .exception((Exception) data)
                     .build();
         } else {
             response = RpcResponse
                     .builder()
-                    .sequenceId(sequenceId)
+                    .requestId(requestId)
+                    .success(true)
                     .value(data)
                     .build();
         }
+        response.setSequenceId(sequenceId);
         return response;
     }
+
+    @Override
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+        if (evt instanceof IdleStateEvent) {
+            final IdleState state = ((IdleStateEvent) evt).state();
+            if (Objects.equals(state, IdleState.READER_IDLE)) {
+                log.info("Idle happened,close the connection.");
+                ctx.close();
+            }
+        }
+        super.userEventTriggered(ctx, evt);
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        log.error("Server end caught exception.", cause);
+        ctx.close();
+    }
+
 }

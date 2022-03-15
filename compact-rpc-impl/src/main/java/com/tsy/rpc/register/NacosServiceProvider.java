@@ -65,7 +65,7 @@ public class NacosServiceProvider {
     }
 
     public void clearAllRegistries() throws NacosException {
-        if (MapUtils.isEmpty(SERVICE_INSTANCES_MAP)) {
+        if (MapUtils.isNotEmpty(SERVICE_INSTANCES_MAP)) {
             for (Map.Entry<String, List<InetSocketAddress>> entry : SERVICE_INSTANCES_MAP.entrySet()) {
                 for (InetSocketAddress address : entry.getValue()) {
                     namingService.deregisterInstance(entry.getKey(),address.getHostName(), address.getPort());

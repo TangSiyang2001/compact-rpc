@@ -26,7 +26,7 @@ import java.util.List;
 public class MessageSharableCodec extends MessageToMessageCodec<ByteBuf, Message> {
 
     @Override
-    protected void encode(ChannelHandlerContext ctx, Message msg, List<Object> out) throws Exception {
+    protected void encode(ChannelHandlerContext ctx, Message msg, List<Object> out) {
         final ByteBuf buffer = ctx.alloc().buffer();
         buffer.writeBytes(GlobalConstant.MAGIC_CODE_CONTENT);
         buffer.writeByte(GlobalConstant.PROTOCOL_VERSION);
@@ -55,21 +55,20 @@ public class MessageSharableCodec extends MessageToMessageCodec<ByteBuf, Message
     }
 
     @Override
-    protected void decode(ChannelHandlerContext ctx, ByteBuf msg, List<Object> out) throws Exception {
+    protected void decode(ChannelHandlerContext ctx, ByteBuf msg, List<Object> out) {
         checkMagicCode(msg);
         checkVersion(msg);
         final byte messageType = msg.readByte();
         final byte compressType = msg.readByte();
         final byte codecType = msg.readByte();
-        final int requestId = msg.readInt();
+        final int sequenceId = msg.readInt();
         final int length = msg.readInt();
         byte[] text = new byte[length];
         msg.readBytes(text);
         final byte[] content = deCompress(text, compressType);
         final Message message = deSerialize(content, codecType, messageType);
-        checkSequenceId(requestId, message.getSequenceId());
+        checkSequenceId(sequenceId, message.getSequenceId());
         out.add(message);
-
     }
 
     private void checkMagicCode(ByteBuf buf) {
@@ -107,8 +106,8 @@ public class MessageSharableCodec extends MessageToMessageCodec<ByteBuf, Message
         return serializer.deserialize(content, MessageType.getMessageClass(messageType));
     }
 
-    private void checkSequenceId(int requestId, int sequenceId) {
-        if (requestId != sequenceId) {
+    private void checkSequenceId(int sequenceId, int msgSequenceId) {
+        if (sequenceId != msgSequenceId) {
             throw new CodecException("Sequence id is wrong.");
         }
     }

@@ -1,6 +1,6 @@
 package com.tsy.rpc.manager;
 
-import com.tsy.rpc.config.RpcServiceConfig;
+import com.tsy.rpc.config.RpcServiceInfo;
 
 /**
  * @author Steven.T
@@ -13,7 +13,7 @@ public interface ServiceBeansManager {
      *
      * @param config 服务配置
      */
-    void publishService(RpcServiceConfig config);
+    void publishService(RpcServiceInfo config);
 
     /**
      * 获取服务实例

@@ -12,7 +12,7 @@ public class SequenceIdUtils {
         throw new IllegalStateException("This is a util class.");
     }
 
-    public static final AtomicInteger ID = new AtomicInteger();
+    private static final AtomicInteger ID = new AtomicInteger();
 
     public static int nextId(){
         return ID.getAndIncrement();

@@ -1,6 +1,7 @@
 package com.tsy.rpc.message;
 
 import com.tsy.rpc.base.message.Message;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,10 +12,16 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @Builder
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class RpcResponse extends Message {
 
-    private int sequenceId;
+    /**
+     * 验证响应合法性的请求id
+     */
+    private String requestId;
+
+    private boolean success;
 
     private Object value;
 
@@ -25,8 +32,9 @@ public class RpcResponse extends Message {
         this.value = value;
     }
 
-    public RpcResponse(Exception exception){
+    public RpcResponse(Exception exception) {
         super.setType(MessageType.RPC_RESPONSE.getType());
         this.exception = exception;
     }
+
 }

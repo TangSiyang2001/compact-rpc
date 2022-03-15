@@ -3,6 +3,7 @@ package com.tsy.rpc.manager.impl;
 import com.tsy.rpc.base.extension.ExtensionLoader;
 import com.tsy.rpc.base.register.ServiceRegistry;
 import com.tsy.rpc.constant.GlobalConstant;
+import com.tsy.rpc.exception.RegisterServiceException;
 import com.tsy.rpc.manager.AbstractServiceBeansManager;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,6 +30,7 @@ public class DefaultServiceBeansManager extends AbstractServiceBeansManager {
             serviceRegistry.registerService(serviceName, new InetSocketAddress(hostAddress, GlobalConstant.RPC_SERVICE_PORT));
         } catch (UnknownHostException e) {
             log.error("Register service fail.UnknownHost.Caused by {}", e.getCause().getMessage());
+            throw new RegisterServiceException("Register service fail.");
         }
     }
 }
