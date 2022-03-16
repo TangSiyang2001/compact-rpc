@@ -1,6 +1,10 @@
 package com.tsy.rpc.manager;
 
 import com.tsy.rpc.base.exception.ServiceReferenceNotFoundException;
+<<<<<<< HEAD
+=======
+import com.tsy.rpc.base.register.ServiceRegistry;
+>>>>>>> c9e355c81e7d598778ee04aa7d618019b3a5e00e
 import com.tsy.rpc.config.RpcServiceInfo;
 
 import java.util.Map;
