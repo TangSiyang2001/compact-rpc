@@ -18,16 +18,18 @@ import java.net.UnknownHostException;
 @Slf4j
 public class DefaultServiceBeansManager extends AbstractServiceBeansManager {
 
+    private final ServiceRegistry serviceRegistrar;
+
     public DefaultServiceBeansManager() {
         //TODO:记得添加spi
-        super.serviceRegistry = ExtensionLoader.getExtensionLoader(ServiceRegistry.class).getExtension("nacos");
+        serviceRegistrar = ExtensionLoader.getExtensionLoader(ServiceRegistry.class).getExtension("nacos");
     }
 
     @Override
     public void registerService(String serviceName) {
         try {
             final String hostAddress = InetAddress.getLocalHost().getHostAddress();
-            serviceRegistry.registerService(serviceName, new InetSocketAddress(hostAddress, GlobalConstant.RPC_SERVICE_PORT));
+            serviceRegistrar.registerService(serviceName, new InetSocketAddress(hostAddress, GlobalConstant.RPC_SERVICE_PORT));
         } catch (UnknownHostException e) {
             log.error("Register service fail.UnknownHost.Caused by {}", e.getCause().getMessage());
             throw new RegisterServiceException("Register service fail.");

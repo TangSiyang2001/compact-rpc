@@ -53,20 +53,19 @@ public class ThreadPoolManager {
     }
 
     private static void doShutDown(String name, ExecutorService pool) {
-        if (pool != null) {
-            try {
-                pool.shutdown();
-                final boolean isShutdown = pool.awaitTermination(10, TimeUnit.SECONDS);
-                if (isShutdown) {
-                    log.info("Shut down thread pool [{}] [{}]", name, pool.isTerminated());
-                } else {
-                    throw new ThreadManageException("Shut down " + name + " failed,state:");
-                }
-            } catch (InterruptedException e) {
-                throw new ThreadManageException("Shut down " + name + " failed,interrupted:", e.getCause());
-            }
-        } else {
+        if (pool == null) {
             throw new ThreadManageException("Shut down with manager " + name + " without a pool.");
+        }
+        try {
+            pool.shutdown();
+            final boolean isShutdown = pool.awaitTermination(10, TimeUnit.SECONDS);
+            if (isShutdown) {
+                log.info("Shut down thread pool [{}] [{}]", name, pool.isTerminated());
+            } else {
+                throw new ThreadManageException("Shut down " + name + " failed,state:");
+            }
+        } catch (InterruptedException e) {
+            throw new ThreadManageException("Shut down " + name + " failed,interrupted:", e.getCause());
         }
     }
 

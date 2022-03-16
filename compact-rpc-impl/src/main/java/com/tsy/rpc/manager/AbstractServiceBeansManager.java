@@ -1,7 +1,6 @@
 package com.tsy.rpc.manager;
 
 import com.tsy.rpc.base.exception.ServiceReferenceNotFoundException;
-import com.tsy.rpc.base.register.ServiceRegistry;
 import com.tsy.rpc.config.RpcServiceInfo;
 
 import java.util.Map;
@@ -18,8 +17,6 @@ public abstract class AbstractServiceBeansManager implements ServiceBeansManager
      * 服务实例缓存
      */
     private final Map<String, Object> servicesCache = new ConcurrentHashMap<>(128);
-
-    protected ServiceRegistry serviceRegistry = null;
 
     @Override
     public Object getServiceInstance(String serviceName) {

@@ -83,13 +83,14 @@ public class NettyRpcRequestHandler extends SimpleChannelInboundHandler<RpcReque
                 log.info("Idle happened,close the connection.");
                 ctx.close();
             }
+        } else {
+            super.userEventTriggered(ctx, evt);
         }
-        super.userEventTriggered(ctx, evt);
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        log.error("Server end caught exception.", cause);
+        log.error("Exception occurred to server end.", cause);
         ctx.close();
     }
 
