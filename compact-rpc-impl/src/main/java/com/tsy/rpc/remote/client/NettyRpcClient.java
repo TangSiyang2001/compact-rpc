@@ -42,12 +42,15 @@ public class NettyRpcClient implements RequestSender {
      */
     private final ServiceDiscovery serviceDiscovery;
 
-    private final WaitPool waitPool;
+    private final UnFinishedRequestPool unFinishedRequestPool;
+
+    private final ChannelPool channelPool;
 
     public NettyRpcClient() {
         this.eventLoopGroup = new NioEventLoopGroup();
         this.serviceDiscovery = ExtensionLoader.getExtensionLoader(ServiceDiscovery.class).getExtension("nacos");
-        this.waitPool = SingletonFactory.getInstance(WaitPool.class);
+        this.unFinishedRequestPool = SingletonFactory.getInstance(UnFinishedRequestPool.class);
+        this.channelPool = SingletonFactory.getInstance(ChannelPool.class);
         this.bootstrap = new Bootstrap();
         bootstrap.group(eventLoopGroup)
                 .channel(NioSocketChannel.class)
@@ -59,16 +62,38 @@ public class NettyRpcClient implements RequestSender {
                         final ChannelPipeline pipeline = ch.pipeline();
                         pipeline.addLast(new IdleStateHandler(0, 5, 0));
                         pipeline.addLast(new MessageSharableCodec());
-                        //TODO:编写并添加response handler
+                        pipeline.addLast(new NettyRpcResponseHandler());
                     }
                 });
     }
 
     @Override
     public CompletableFuture<RpcResponse> send(RpcRequest request) {
+        final InetSocketAddress address = serviceDiscovery.discoverService(request.getServiceName());
+        if (address == null) {
+            throw new RpcException("Service address for service" + request.getServiceName()
+                    + "not found,requestId" + request.getRequestId()
+            );
+        }
         final CompletableFuture<RpcResponse> responseFuture = new CompletableFuture<>();
-        //TODO:获取连接,发送请求,返回future
-        return null;
+        final Channel channel = getChannel(address);
+        if (!channel.isActive()) {
+            throw new RpcException("Connection failed.");
+        }
+        if (!channel.isWritable()) {
+            throw new IllegalStateException("Channel cannot be written");
+        }
+        unFinishedRequestPool.wait(request.getRequestId(), responseFuture);
+        channel.writeAndFlush(request).addListener((ChannelFutureListener)future -> {
+            if (future.isSuccess()) {
+                log.info("{}@{} sent successfully.", request.getServiceName(), request.getRequestId());
+            }else {
+                responseFuture.completeExceptionally(future.cause());
+                log.error("{}@{} sent unsuccessfully.", request.getServiceName(), request.getRequestId());
+                future.channel().close();
+            }
+        });
+        return responseFuture;
     }
 
     /**
@@ -78,8 +103,13 @@ public class NettyRpcClient implements RequestSender {
      * @return 连接
      */
     private Channel getChannel(InetSocketAddress serverAddress) {
-        //TODO:设计成先从连接缓存池中取，没有的话发起连接，并缓存
-        return connect(serverAddress);
+        final Channel channel = channelPool.getChannel(serverAddress);
+        if (channel != null) {
+            return channel;
+        }
+        final Channel newChannel = connect(serverAddress);
+        channelPool.putChannel(serverAddress, newChannel);
+        return newChannel;
     }
 
     /**

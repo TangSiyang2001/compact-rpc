@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Steven.T
  * @date 2022/3/16
  */
-public class WaitPool {
+public class UnFinishedRequestPool {
 
     private static final Map<String, CompletableFuture<RpcResponse>> FUTURE_CACHE = new ConcurrentHashMap<>(64);
 

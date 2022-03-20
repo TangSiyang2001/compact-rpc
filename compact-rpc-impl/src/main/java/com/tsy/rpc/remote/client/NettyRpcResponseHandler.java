@@ -1,10 +1,12 @@
 package com.tsy.rpc.remote.client;
 
+import com.tsy.rpc.base.factory.SingletonFactory;
 import com.tsy.rpc.message.RpcResponse;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
+import io.netty.util.ReferenceCountUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
@@ -15,10 +17,17 @@ import java.util.Objects;
  */
 @Slf4j
 public class NettyRpcResponseHandler extends SimpleChannelInboundHandler<RpcResponse> {
+
+    private final UnFinishedRequestPool requestPool;
+
+    public NettyRpcResponseHandler() {
+        this.requestPool = SingletonFactory.getInstance(UnFinishedRequestPool.class);
+    }
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, RpcResponse msg) {
-        //TODO:利用SingletonFactory缓存的中间对象改变CompletableFuture
-
+        requestPool.signal(msg);
+        ReferenceCountUtil.release(msg);
     }
 
     @Override
