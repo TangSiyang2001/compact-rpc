@@ -12,6 +12,7 @@
     <modules>
         <module>compact-rpc-base</module>
         <module>compact-rpc-impl</module>
+        <module>compact-rpc-spring</module>
     </modules>
 
     <dependencies>

@@ -1,0 +1,1 @@
+loadbalance=com.tsy.rpc.loadbalance.RandomBalancer

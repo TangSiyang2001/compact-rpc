@@ -118,7 +118,7 @@ public class ExtensionLoader<T> {
     private T createExtension(String name) {
         final Class<?> clazz = getExtensionClasses().get(name);
         if (clazz == null) {
-            throw new NoSuchExtensionException("Extension" + name + "does not exists.");
+            throw new NoSuchExtensionException("Extension:{" + name + "} does not exists.");
         }
         Object instance = EXTENSION_INSTANCES_CACHE.get(clazz);
         if (instance == null) {

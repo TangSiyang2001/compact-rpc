@@ -84,10 +84,10 @@ public class NettyRpcClient implements RequestSender {
             throw new IllegalStateException("Channel cannot be written");
         }
         unFinishedRequestPool.wait(request.getRequestId(), responseFuture);
-        channel.writeAndFlush(request).addListener((ChannelFutureListener)future -> {
+        channel.writeAndFlush(request).addListener((ChannelFutureListener) future -> {
             if (future.isSuccess()) {
                 log.info("{}@{} sent successfully.", request.getServiceName(), request.getRequestId());
-            }else {
+            } else {
                 responseFuture.completeExceptionally(future.cause());
                 log.error("{}@{} sent unsuccessfully.", request.getServiceName(), request.getRequestId());
                 future.channel().close();
