@@ -12,5 +12,10 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface RpcServiceImpl {
-    //TODO:设计内容
+
+    String name() default "";
+
+    String version() default "";
+
+    String group() default "";
 }

@@ -1,5 +1,6 @@
 package com.tsy.rpc.remote.client;
 
+import com.tsy.rpc.base.extension.annotation.SPI;
 import com.tsy.rpc.message.RpcRequest;
 import com.tsy.rpc.message.RpcResponse;
 
@@ -11,6 +12,7 @@ import java.util.concurrent.CompletableFuture;
  * @author Steven.T
  * @date 2022/3/14
  */
+@SPI
 public interface RequestSender {
 
     /**

@@ -1,6 +1,7 @@
 package com.tsy.rpc.remote.server.handler;
 
 import com.tsy.rpc.base.exception.InvokeMethodException;
+import com.tsy.rpc.base.factory.SingletonFactory;
 import com.tsy.rpc.manager.ServiceBeansManager;
 import com.tsy.rpc.manager.impl.DefaultServiceBeansManager;
 import com.tsy.rpc.message.RpcRequest;
@@ -23,7 +24,7 @@ import java.util.Objects;
 @Slf4j
 public class NettyRpcRequestHandler extends SimpleChannelInboundHandler<RpcRequest> {
 
-    private final ServiceBeansManager serviceBeansManager = new DefaultServiceBeansManager();
+    private final ServiceBeansManager serviceBeansManager = SingletonFactory.getInstance(DefaultServiceBeansManager.class);
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, RpcRequest msg) {

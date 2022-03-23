@@ -21,7 +21,6 @@ public class DefaultServiceBeansManager extends AbstractServiceBeansManager {
     private final ServiceRegistry serviceRegistrar;
 
     public DefaultServiceBeansManager() {
-        //TODO:记得添加spi
         serviceRegistrar = ExtensionLoader.getExtensionLoader(ServiceRegistry.class).getExtension("nacos");
     }
 

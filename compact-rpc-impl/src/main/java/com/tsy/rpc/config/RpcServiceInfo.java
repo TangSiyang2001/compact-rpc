@@ -1,7 +1,8 @@
 package com.tsy.rpc.config;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 所调用的服务的相关信息
@@ -10,7 +11,7 @@ import lombok.Data;
  * @date 2022/2/22
  */
 @Data
-@AllArgsConstructor
+@Builder
 public class RpcServiceInfo {
 
     /**
@@ -27,4 +28,12 @@ public class RpcServiceInfo {
 
     private Object serviceInstance;
 
+    public String getServiceName() {
+        final String delimiter = "-";
+        final String postfix = delimiter + group + delimiter + version;
+        if (StringUtils.isBlank(serviceName)) {
+            return serviceInstance.getClass().getInterfaces()[0].getCanonicalName() + postfix;
+        }
+        return this.serviceName + postfix;
+    }
 }
