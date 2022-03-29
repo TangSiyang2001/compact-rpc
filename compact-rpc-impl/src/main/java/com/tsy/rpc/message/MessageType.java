@@ -19,7 +19,11 @@ public enum MessageType {
     /**
      * prc-response
      */
-    RPC_RESPONSE((byte) 0x02,RpcResponse.class);
+    RPC_RESPONSE((byte) 0x02,RpcResponse.class),
+
+    RPC_PING_MESSAGE((byte) 0x03,RpcPingMessage.class),
+
+    RPC_PONG_MESSAGE((byte) 0x04,RpcPongMessage.class);
 
     byte type;
 

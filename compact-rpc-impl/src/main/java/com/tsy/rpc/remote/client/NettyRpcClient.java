@@ -7,6 +7,8 @@ import com.tsy.rpc.codec.MessageSharableCodec;
 import com.tsy.rpc.exception.RpcException;
 import com.tsy.rpc.message.RpcRequest;
 import com.tsy.rpc.message.RpcResponse;
+import com.tsy.rpc.remote.client.handler.NettyHeartBeatHandler;
+import com.tsy.rpc.remote.client.handler.NettyRpcResponseHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -62,6 +64,7 @@ public class NettyRpcClient implements RequestSender {
                         final ChannelPipeline pipeline = ch.pipeline();
                         pipeline.addLast(new IdleStateHandler(0, 5, 0));
                         pipeline.addLast(new MessageSharableCodec());
+                        pipeline.addLast(new NettyHeartBeatHandler());
                         pipeline.addLast(new NettyRpcResponseHandler());
                     }
                 });

@@ -5,6 +5,7 @@ import com.tsy.rpc.base.thread.ThreadPoolManager;
 import com.tsy.rpc.codec.MessageSharableCodec;
 import com.tsy.rpc.codec.ProtocolFrameDecoder;
 import com.tsy.rpc.constant.GlobalConstant;
+import com.tsy.rpc.remote.server.handler.NettyPingMessageHandler;
 import com.tsy.rpc.remote.server.handler.NettyRpcRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -51,6 +52,7 @@ public class NettyRpcServer extends AbstractServer {
                                     .addLast(new IdleStateHandler(30, 0, 0, TimeUnit.SECONDS))
                                     .addLast(new ProtocolFrameDecoder())
                                     .addLast(new MessageSharableCodec())
+                                    .addLast(new NettyPingMessageHandler())
                                     .addLast(serviceHandlerGroup, new NettyRpcRequestHandler());
                         }
                     })
