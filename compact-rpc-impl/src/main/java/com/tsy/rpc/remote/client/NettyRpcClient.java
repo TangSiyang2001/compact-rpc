@@ -4,6 +4,7 @@ import com.tsy.rpc.base.extension.ExtensionLoader;
 import com.tsy.rpc.base.factory.SingletonFactory;
 import com.tsy.rpc.base.register.ServiceDiscovery;
 import com.tsy.rpc.codec.MessageSharableCodec;
+import com.tsy.rpc.codec.ProtocolFrameDecoder;
 import com.tsy.rpc.exception.RpcException;
 import com.tsy.rpc.message.RpcRequest;
 import com.tsy.rpc.message.RpcResponse;
@@ -60,9 +61,10 @@ public class NettyRpcClient implements RequestSender {
                 .handler(new LoggingHandler(LogLevel.INFO))
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
-                    protected void initChannel(SocketChannel ch) throws Exception {
+                    protected void initChannel(SocketChannel ch) {
                         final ChannelPipeline pipeline = ch.pipeline();
                         pipeline.addLast(new IdleStateHandler(0, 5, 0));
+                        pipeline.addLast(new ProtocolFrameDecoder());
                         pipeline.addLast(new MessageSharableCodec());
                         pipeline.addLast(new NettyHeartBeatHandler());
                         pipeline.addLast(new NettyRpcResponseHandler());
@@ -80,9 +82,10 @@ public class NettyRpcClient implements RequestSender {
         }
         final CompletableFuture<RpcResponse> responseFuture = new CompletableFuture<>();
         final Channel channel = getChannel(address);
-        if (!channel.isActive()) {
-            throw new RpcException("Connection failed.");
-        }
+        //TODO:重新考虑这边的写法,连接为什么死了
+//        if (!channel.isActive()) {
+//            throw new RpcException("Connection failed.");
+//        }
         if (!channel.isWritable()) {
             throw new IllegalStateException("Channel cannot be written");
         }
@@ -110,6 +113,7 @@ public class NettyRpcClient implements RequestSender {
         if (channel != null) {
             return channel;
         }
+        //TODO:连接池的问题
         final Channel newChannel = connect(serverAddress);
         channelPool.putChannel(serverAddress, newChannel);
         return newChannel;

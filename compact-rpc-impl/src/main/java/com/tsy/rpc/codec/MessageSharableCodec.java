@@ -40,7 +40,7 @@ public class MessageSharableCodec extends MessageToMessageCodec<ByteBuf, Message
         //TODO:可以判断是否为心跳
         final byte[] serializeRes = serialize(codecType, msg);
         final byte[] compressedData = compress(compressType, serializeRes);
-        buffer.readBytes(compressedData);
+        buffer.writeBytes(compressedData);
         out.add(buffer);
     }
 

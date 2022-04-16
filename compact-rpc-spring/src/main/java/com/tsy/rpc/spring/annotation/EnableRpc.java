@@ -2,6 +2,7 @@ package com.tsy.rpc.spring.annotation;
 
 import com.tsy.rpc.remote.server.NettyRpcServer;
 import com.tsy.rpc.spring.extension.BeanDefinitionRegistrar;
+import com.tsy.rpc.spring.extension.RpcBeanPostProcessor;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
@@ -15,7 +16,7 @@ import java.lang.annotation.*;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@Import({BeanDefinitionRegistrar.class, NettyRpcServer.class})
+@Import({BeanDefinitionRegistrar.class, NettyRpcServer.class, RpcBeanPostProcessor.class})
 public @interface EnableRpc {
     String value() default "";
 }

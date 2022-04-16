@@ -42,7 +42,7 @@ public class NettyRpcServer extends AbstractServer {
             serverBootstrap
                     .group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
-                    .handler(new LoggingHandler(LogLevel.INFO))
+                    .handler(new LoggingHandler(LogLevel.DEBUG))
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         // TODO:自定义handler
                         @Override
@@ -57,9 +57,9 @@ public class NettyRpcServer extends AbstractServer {
                         }
                     })
                     .option(ChannelOption.SO_BACKLOG, 128)
-                    .option(ChannelOption.TCP_NODELAY, true)
+                    .childOption(ChannelOption.TCP_NODELAY, true)
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
-            final ChannelFuture channelFuture = serverBootstrap.bind(GlobalConstant.RPC_SERVICE_PORT);
+            final ChannelFuture channelFuture = serverBootstrap.bind(GlobalConstant.RPC_SERVICE_PORT).sync();
             channelFuture.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             log.error("Error occurs when starting server:", e);

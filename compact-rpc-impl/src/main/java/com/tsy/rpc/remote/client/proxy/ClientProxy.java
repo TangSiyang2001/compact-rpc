@@ -66,6 +66,7 @@ public class ClientProxy implements InvocationHandler {
                 .returnType(method.getReturnType())
                 .version(serviceInfo.getVersion())
                 .group(serviceInfo.getGroup())
+                .serviceName(serviceInfo.getServiceName())
                 .build();
         //发送请求
         final CompletableFuture<RpcResponse> responseFuture = requestSender.send(request);

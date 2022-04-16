@@ -1,7 +1,5 @@
 package com.tsy.rpc.message;
 
-import com.tsy.rpc.annotation.RpcService;
-import com.tsy.rpc.base.exception.AnnotationNotFoundException;
 import com.tsy.rpc.base.message.Message;
 import com.tsy.rpc.base.utils.SequenceIdUtils;
 import lombok.Builder;
@@ -52,8 +50,10 @@ public class RpcRequest extends Message {
 
     private String group;
 
+    private String serviceName;
+
     public RpcRequest(String requestId,String interfaceName, String methodName, Class<?> returnType, Class<?>[] paramTypes,
-                      Object[] paramValues, String version, String group) {
+                      Object[] paramValues, String version, String group,String serviceName) {
 
         super.setType(MessageType.RPC_REQUEST.getType());
         super.setSequenceId(SequenceIdUtils.nextId());
@@ -65,17 +65,12 @@ public class RpcRequest extends Message {
         this.paramValues = paramValues;
         this.version = version;
         this.group = group;
+        this.serviceName = serviceName;
     }
 
     public String getServiceName() {
-        final Class<? extends RpcRequest> clazz = this.getClass();
-        final RpcService annotation = clazz.getAnnotation(RpcService.class);
-        if (annotation == null) {
-            throw new AnnotationNotFoundException("Missing Annotation @RpcService.");
-        }
-        final String name = annotation.name();
-        if (StringUtils.isNotBlank(name)) {
-            return name;
+        if (StringUtils.isNotBlank(this.serviceName)) {
+            return serviceName;
         }
         return interfaceName + group + version;
     }

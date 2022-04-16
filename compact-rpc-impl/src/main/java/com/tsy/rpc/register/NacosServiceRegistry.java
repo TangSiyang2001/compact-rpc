@@ -56,6 +56,6 @@ public class NacosServiceRegistry implements ServiceRegistry {
     }
 
     private boolean isInValidSocketAddress(InetSocketAddress address) {
-        return address == null || StringUtils.isNotBlank(address.getHostName());
+        return address == null || StringUtils.isBlank(address.getHostName());
     }
 }

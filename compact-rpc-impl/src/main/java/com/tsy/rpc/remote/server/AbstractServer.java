@@ -14,10 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 public abstract class AbstractServer {
 
     private final ServiceBeansManager serviceBeansManager;
-    /**
-     * TODO:改为可配置
-     */
-    private int port = 8888;
 
     protected AbstractServer() {
         serviceBeansManager = SingletonFactory.getInstance(DefaultServiceBeansManager.class);
