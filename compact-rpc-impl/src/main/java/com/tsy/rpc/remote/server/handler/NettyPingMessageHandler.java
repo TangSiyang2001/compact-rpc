@@ -16,6 +16,12 @@ import java.util.Objects;
 public class NettyPingMessageHandler extends ChannelDuplexHandler {
 
     @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        log.info("NettyPingMessageHandler active");
+        super.channelRead(ctx, msg);
+    }
+
+    @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof IdleStateEvent) {
             final IdleState state = ((IdleStateEvent) evt).state();

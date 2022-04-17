@@ -5,14 +5,11 @@ import com.tsy.rpc.base.extension.ExtensionLoader;
 import com.tsy.rpc.base.loadbalance.LoadBalancer;
 import com.tsy.rpc.base.register.ServiceDiscovery;
 import com.tsy.rpc.base.register.ServiceRegistry;
-import com.tsy.rpc.base.serialize.Serializer;
-import com.tsy.rpc.message.RpcRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.UUID;
 
 /**
  * @author Steven.T
@@ -21,19 +18,19 @@ import java.util.UUID;
 @Slf4j
 public class ExtensionLoaderTest {
 
-    @Test
-    public void testSerializer(){
-        final Serializer serializer = ExtensionLoader.getExtensionLoader(Serializer.class).getExtension("protostuff");
-        assert serializer != null;
-        RpcRequest request = RpcRequest.builder()
-                .requestId(UUID.randomUUID().toString())
-                .version("1.0")
-                .interfaceName("test")
-                .build();
-        final byte[] serialize = serializer.serialize(request);
-        final RpcRequest res = serializer.deserialize(serialize, RpcRequest.class);
-        log.debug(res.toString());
-    }
+//    @Test
+//    public void testSerializer(){
+//        final Serializer serializer = ExtensionLoader.getExtensionLoader(Serializer.class).getExtension("protostuff");
+//        assert serializer != null;
+//        RpcRequest request = RpcRequest.builder()
+//                .requestId(UUID.randomUUID().toString())
+//                .version("1.0")
+//                .interfaceName("test")
+//                .build();
+//        final byte[] serialize = serializer.serialize(request);
+//        final RpcRequest res = serializer.deserialize(serialize, RpcRequest.class);
+//        log.debug(res.toString());
+//    }
 
     @Test
     public void testCompress(){

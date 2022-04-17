@@ -2,9 +2,7 @@ package com.tsy.rpc.message;
 
 import com.tsy.rpc.base.message.Message;
 import com.tsy.rpc.base.utils.SequenceIdUtils;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -14,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 @Data
 @Builder
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class RpcRequest extends Message {
 
     /**

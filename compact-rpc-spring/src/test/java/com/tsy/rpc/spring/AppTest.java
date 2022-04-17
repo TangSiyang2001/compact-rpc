@@ -1,7 +1,6 @@
 package com.tsy.rpc.spring;
 
 import com.tsy.rpc.base.extension.ExtensionLoader;
-import com.tsy.rpc.message.RpcRequest;
 import com.tsy.rpc.remote.client.RequestSender;
 import com.tsy.rpc.remote.server.NettyRpcServer;
 import org.junit.Assert;
@@ -30,6 +29,5 @@ public class AppTest {
         final NettyRpcServer nettyRpcServer = new NettyRpcServer();
         nettyRpcServer.start();
         final RequestSender netty = ExtensionLoader.getExtensionLoader(RequestSender.class).getExtension("netty");
-        netty.send(RpcRequest.builder().build());
     }
 }

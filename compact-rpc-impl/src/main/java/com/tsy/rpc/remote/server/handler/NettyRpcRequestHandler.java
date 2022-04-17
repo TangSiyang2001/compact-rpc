@@ -25,6 +25,7 @@ public class NettyRpcRequestHandler extends SimpleChannelInboundHandler<RpcReque
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, RpcRequest msg) {
+        log.info("received message{}",msg);
         final String serviceName = msg.getServiceName();
         final Object result = doInvoke(msg, serviceName);
         final RpcResponse response = buildResponse(msg.getSequenceId(), msg.getRequestId(), result);

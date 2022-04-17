@@ -82,10 +82,9 @@ public class NettyRpcClient implements RequestSender {
         }
         final CompletableFuture<RpcResponse> responseFuture = new CompletableFuture<>();
         final Channel channel = getChannel(address);
-        //TODO:重新考虑这边的写法,连接为什么死了
-//        if (!channel.isActive()) {
-//            throw new RpcException("Connection failed.");
-//        }
+        if (!channel.isActive()) {
+            throw new RpcException("Connection failed.");
+        }
         if (!channel.isWritable()) {
             throw new IllegalStateException("Channel cannot be written");
         }
@@ -113,7 +112,6 @@ public class NettyRpcClient implements RequestSender {
         if (channel != null) {
             return channel;
         }
-        //TODO:连接池的问题
         final Channel newChannel = connect(serverAddress);
         channelPool.putChannel(serverAddress, newChannel);
         return newChannel;
@@ -133,7 +131,12 @@ public class NettyRpcClient implements RequestSender {
                 throw new RpcException("Connection failed to {" + serverAddress + "}", future.cause());
             }
         });
-        return channelFuture.channel();
+        try {
+            //记住返回的是等待连接成功后的结果 channelFuture.sync().channel()而非channelFuture.channel()
+            return channelFuture.sync().channel();
+        } catch (InterruptedException e) {
+            throw new RpcException("Connect process error.", e);
+        }
     }
 
     public void close() {

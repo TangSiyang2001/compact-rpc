@@ -13,6 +13,7 @@ import com.tsy.rpc.message.MessageType;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageCodec;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ import java.util.List;
  * @author Steven.T
  * @date 2022/2/19
  */
+@Slf4j
 public class MessageSharableCodec extends MessageToMessageCodec<ByteBuf, Message> {
 
     @Override
@@ -40,6 +42,8 @@ public class MessageSharableCodec extends MessageToMessageCodec<ByteBuf, Message
         //TODO:可以判断是否为心跳
         final byte[] serializeRes = serialize(codecType, msg);
         final byte[] compressedData = compress(compressType, serializeRes);
+        //消息长度
+        buffer.writeInt(compressedData.length);
         buffer.writeBytes(compressedData);
         out.add(buffer);
     }
@@ -56,6 +60,7 @@ public class MessageSharableCodec extends MessageToMessageCodec<ByteBuf, Message
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf msg, List<Object> out) {
+        log.info("Decode active");
         checkMagicCode(msg);
         checkVersion(msg);
         final byte messageType = msg.readByte();
