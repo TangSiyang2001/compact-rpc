@@ -1,7 +1,6 @@
 package com.tsy.rpc.message;
 
 import com.tsy.rpc.base.message.Message;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,7 +11,6 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @Builder
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class RpcResponse extends Message {
 
@@ -37,4 +35,18 @@ public class RpcResponse extends Message {
         this.exception = exception;
     }
 
+    /**
+     * builder进行build操作时调用的是这个构造函数，要在里面指明类型
+     * @param requestId 请求id
+     * @param success 是否执行成功
+     * @param value 返回值
+     * @param exception 产生异常
+     */
+    public RpcResponse(String requestId, boolean success, Object value, Exception exception) {
+        super.setType(MessageType.RPC_RESPONSE.getType());
+        this.requestId = requestId;
+        this.success = success;
+        this.value = value;
+        this.exception = exception;
+    }
 }

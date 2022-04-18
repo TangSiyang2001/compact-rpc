@@ -97,7 +97,7 @@ public class MessageSharableCodec extends MessageToMessageCodec<ByteBuf, Message
         }
         byte version = buf.readByte();
         if (version != GlobalConstant.PROTOCOL_VERSION) {
-            throw new CodecException("Version does not adapt");
+            throw new CodecException("Version is not consistent");
         }
     }
 

@@ -62,6 +62,7 @@ public class NettyRpcRequestHandler extends SimpleChannelInboundHandler<RpcReque
                     .success(false)
                     .exception((Exception) data)
                     .build();
+
         } else {
             response = RpcResponse
                     .builder()
