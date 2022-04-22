@@ -49,7 +49,7 @@ sh startup.sh -m standalone
 bash startup.sh -m standalone
 ```
 
-![image-20220422230615761](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220422230615761.png)
+![image-20220422230615761](http://cdn.blog.yileng.top/image-20220422230615761.png)
 
 观察到nacos启动成功
 
@@ -57,27 +57,27 @@ bash startup.sh -m standalone
 
 等待依赖导入成功后，运行服务端测试（com.tsy.rpc.test.server.App的main方法）
 
-![image-20220422231304094](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220422231304094.png)
+![image-20220422231304094](http://cdn.blog.yileng.top/image-20220422231304094.png)
 
 
 
-![image-20220422232146205](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220422232146205.png)
+![image-20220422232146205](http://cdn.blog.yileng.top/image-20220422232146205.png)
 
 正常启动
 
-![image-20220422231600599](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220422231600599.png)
+![image-20220422231600599](http://cdn.blog.yileng.top/image-20220422231600599.png)
 
 若服务端没有出现异常退出，运行客户端测试（com.tsy.rpc.test.client.App的main方法）
 
-![image-20220422231711768](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220422231711768.png)
+![image-20220422231711768](http://cdn.blog.yileng.top/image-20220422231711768.png)
 
 
 
-![image-20220422232106090](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220422232106090.png)
+![image-20220422232106090](http://cdn.blog.yileng.top/image-20220422232106090.png)
 
 控制台打印出hello rpc!字样，测试成功。
 
-![image-20220422231902456](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220422231902456.png)
+![image-20220422231902456](http://cdn.blog.yileng.top/image-20220422231902456.png)
 
 
 
