@@ -60,7 +60,9 @@ public class MessageSharableCodec extends MessageToMessageCodec<ByteBuf, Message
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf msg, List<Object> out) {
-        log.info("Decode active");
+        if(log.isDebugEnabled()){
+            log.debug("Decode active");
+        }
         checkMagicCode(msg);
         checkVersion(msg);
         final byte messageType = msg.readByte();

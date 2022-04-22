@@ -17,7 +17,9 @@ public class NettyPingMessageHandler extends ChannelDuplexHandler {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        log.info("NettyPingMessageHandler active");
+        if(log.isDebugEnabled()){
+            log.debug("NettyPingMessageHandler active");
+        }
         super.channelRead(ctx, msg);
     }
 
