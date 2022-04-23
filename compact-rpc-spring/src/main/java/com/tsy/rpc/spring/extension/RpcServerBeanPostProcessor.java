@@ -1,12 +1,10 @@
 package com.tsy.rpc.spring.extension;
 
 import com.tsy.rpc.annotation.RpcServiceImpl;
-import com.tsy.rpc.base.extension.ExtensionLoader;
 import com.tsy.rpc.base.factory.SingletonFactory;
 import com.tsy.rpc.config.RpcServiceInfo;
 import com.tsy.rpc.manager.ServiceBeansManager;
 import com.tsy.rpc.manager.impl.DefaultServiceBeansManager;
-import com.tsy.rpc.remote.client.RequestSender;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -20,11 +18,8 @@ public class RpcServerBeanPostProcessor implements BeanPostProcessor {
 
     private final ServiceBeansManager serviceBeansManager;
 
-    private final RequestSender requestSender;
-
     public RpcServerBeanPostProcessor() {
         this.serviceBeansManager = SingletonFactory.getInstance(DefaultServiceBeansManager.class);
-        this.requestSender = ExtensionLoader.getExtensionLoader(RequestSender.class).getExtension("netty");
     }
 
     @Override
