@@ -1,14 +1,13 @@
 package com.tsy.prc.test.client;
 
-import com.tsy.rpc.spring.annotation.EnableRpc;
+import com.tsy.rpc.spring.annotation.EnableRpcClient;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
  * Hello world!
  */
-@EnableRpc
+@EnableRpcClient
 public class App {
-
 
     public static void main(String[] args) {
         try {
