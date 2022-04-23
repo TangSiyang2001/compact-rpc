@@ -49,7 +49,7 @@ sh startup.sh -m standalone
 bash startup.sh -m standalone
 ```
 
-![image-20220422230615761](http://cdn.blog.yileng.top/image-20220422230615761.png)
+![image-20220422230615761](http://cdn.blog.yileng.top/image-20220423210318408.png)
 
 观察到nacos启动成功
 
@@ -61,7 +61,7 @@ bash startup.sh -m standalone
 
 
 
-![image-20220422232146205](http://cdn.blog.yileng.top/image-20220422232146205.png)
+![image-20220422232146205](http://cdn.blog.yileng.top/image-20220423210834811.png)
 
 正常启动
 
@@ -73,11 +73,11 @@ bash startup.sh -m standalone
 
 
 
-![image-20220422232106090](http://cdn.blog.yileng.top/image-20220422232106090.png)
+![image-20220422232106090](http://cdn.blog.yileng.top/image-20220423210432954.png)
 
 控制台打印出hello rpc!字样，测试成功。
 
-![image-20220422231902456](http://cdn.blog.yileng.top/image-20220422231902456.png)
+![image-20220422231902456](http://cdn.blog.yileng.top/image-20220423211058800.png)
 
 
 
