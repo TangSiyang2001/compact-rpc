@@ -11,7 +11,7 @@
 
 - **compact-rpc-base**：该项目的基础模块，实现了项目通用的接口、注解、实体和工具。
 - **compact-rpc-impl**：该项目的主要模块，实现了该rpc框架的通信协议、序列化机制，服务注册与发现，服务端、客户端通信等主体功能。
-- **compact-rpc-spring**：该项目的拓展模块，实现与原生spring框架的适配，能够伴随ApplicationContext自启动，同时根据注解情况自动完成服务注册，支撑远程过程调用。
+- **compact-rpc-spring**：该项目的拓展模块，实现与原生spring框架的适配，能够伴随ApplicationContext自启动，同时根据注解情况自动完成服务注册，支持远程过程调用。
 - 带有**compact-rpc-test**前缀的均为测试模块。
 - **compact-rpc-test-api**：服务端与客户端共同依赖的服务接口模块。
 - **compact-rpc-test-client**：客户端样例。
