@@ -2,8 +2,8 @@ package com.tsy.rpc.remote.server;
 
 import com.tsy.rpc.base.factory.SingletonFactory;
 import com.tsy.rpc.config.RpcServiceInfo;
-import com.tsy.rpc.manager.ServiceBeansManager;
-import com.tsy.rpc.manager.impl.DefaultServiceBeansManager;
+import com.tsy.rpc.manager.ServiceManager;
+import com.tsy.rpc.manager.impl.DefaultServiceManager;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -13,10 +13,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class AbstractServer {
 
-    private final ServiceBeansManager serviceBeansManager;
+    protected final ServiceManager serviceManager;
 
     protected AbstractServer() {
-        serviceBeansManager = SingletonFactory.getInstance(DefaultServiceBeansManager.class);
+        serviceManager = SingletonFactory.getInstance(DefaultServiceManager.class);
     }
 
     /**
@@ -25,8 +25,11 @@ public abstract class AbstractServer {
      * @param config 相关配置
      */
     public void registerServiceOnStart(RpcServiceInfo config) {
-        serviceBeansManager.publishService(config);
+        serviceManager.publishService(config);
     }
 
-    public abstract void start();
+    /**
+     * 主启动方法
+     */
+    public abstract void run();
 }

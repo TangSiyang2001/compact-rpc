@@ -3,8 +3,8 @@ package com.tsy.rpc.spring.extension;
 import com.tsy.rpc.annotation.RpcServiceImpl;
 import com.tsy.rpc.base.factory.SingletonFactory;
 import com.tsy.rpc.config.RpcServiceInfo;
-import com.tsy.rpc.manager.ServiceBeansManager;
-import com.tsy.rpc.manager.impl.DefaultServiceBeansManager;
+import com.tsy.rpc.manager.ServiceManager;
+import com.tsy.rpc.manager.impl.DefaultServiceManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -16,10 +16,10 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 @Slf4j
 public class RpcServerBeanPostProcessor implements BeanPostProcessor {
 
-    private final ServiceBeansManager serviceBeansManager;
+    private final ServiceManager serviceManager;
 
     public RpcServerBeanPostProcessor() {
-        this.serviceBeansManager = SingletonFactory.getInstance(DefaultServiceBeansManager.class);
+        this.serviceManager = SingletonFactory.getInstance(DefaultServiceManager.class);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class RpcServerBeanPostProcessor implements BeanPostProcessor {
                     .serviceName(annotation.name())
                     .serviceInstance(bean)
                     .build();
-            serviceBeansManager.publishService(serviceInfo);
+            serviceManager.publishService(serviceInfo);
         }
         return bean;
     }

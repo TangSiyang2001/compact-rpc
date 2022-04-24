@@ -27,10 +27,12 @@ import java.util.List;
 @Slf4j
 public class MessageSharableCodec extends MessageToMessageCodec<ByteBuf, Message> {
 
+    private static final byte[] MAGIC_CODE_CONTENT = {(byte)'_',(byte)'r',(byte)'p',(byte)'c'};
+
     @Override
     protected void encode(ChannelHandlerContext ctx, Message msg, List<Object> out) {
         final ByteBuf buffer = ctx.alloc().buffer();
-        buffer.writeBytes(GlobalConstant.MAGIC_CODE_CONTENT);
+        buffer.writeBytes(MAGIC_CODE_CONTENT);
         buffer.writeByte(GlobalConstant.PROTOCOL_VERSION);
         buffer.writeByte(msg.getType());
         //TODO:尝试实现可选的压缩方式
@@ -82,12 +84,11 @@ public class MessageSharableCodec extends MessageToMessageCodec<ByteBuf, Message
         if (buf == null) {
             throw new IllegalArgumentException("buf should be not null");
         }
-        final byte[] magicCodeContent = GlobalConstant.MAGIC_CODE_CONTENT;
-        final int length = magicCodeContent.length;
+        final int length = MAGIC_CODE_CONTENT.length;
         byte[] magicCode = new byte[length];
         buf.readBytes(magicCode);
         for (int i = 0; i < length; i++) {
-            if (magicCode[i] != magicCodeContent[i]) {
+            if (magicCode[i] != MAGIC_CODE_CONTENT[i]) {
                 throw new CodecException("Magic code is wrong");
             }
         }

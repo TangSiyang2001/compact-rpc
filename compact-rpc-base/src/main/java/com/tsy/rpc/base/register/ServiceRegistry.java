@@ -27,4 +27,8 @@ public interface ServiceRegistry {
      */
     void deregisterService(String serviceName, InetSocketAddress inetSocketAddress);
 
+    /**
+     * 移除所有注册的服务
+     */
+    void deregisterAllService();
 }

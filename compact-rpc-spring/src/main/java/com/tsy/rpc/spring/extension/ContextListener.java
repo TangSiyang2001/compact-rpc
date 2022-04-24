@@ -22,7 +22,7 @@ public class ContextListener implements ApplicationListener<ContextRefreshedEven
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         NettyRpcServer nettyRpcServer = applicationContext.getBean(NettyRpcServer.class);
-        nettyRpcServer.start();
+        nettyRpcServer.run();
     }
 
     @Override

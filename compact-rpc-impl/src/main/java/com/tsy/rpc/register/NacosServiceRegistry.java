@@ -49,6 +49,15 @@ public class NacosServiceRegistry implements ServiceRegistry {
         }
     }
 
+    @Override
+    public void deregisterAllService(){
+        try {
+            serviceProvider.clearAllRegistries();
+        } catch (NacosException e) {
+            log.error("Deregister service failed:{},{}",e.getErrCode(),e.getErrMsg(),e);
+        }
+    }
+
     private void checkServiceInfo(String serviceName, InetSocketAddress inetSocketAddress) {
         if (StringUtils.isBlank(serviceName) || isInValidSocketAddress(inetSocketAddress)) {
             throw new IllegalArgumentException("Invalid inetSocketAddress.");

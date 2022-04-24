@@ -29,8 +29,9 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class NettyRpcServer extends AbstractServer {
 
+
     @Override
-    public void start() {
+    public void run() {
         final NioEventLoopGroup bossGroup = new NioEventLoopGroup();
         final NioEventLoopGroup workerGroup = new NioEventLoopGroup();
         final DefaultEventLoopGroup serviceHandlerGroup = new DefaultEventLoopGroup(
@@ -47,25 +48,32 @@ public class NettyRpcServer extends AbstractServer {
                     .childOption(ChannelOption.TCP_NODELAY, true)
                     .childOption(ChannelOption.SO_KEEPALIVE, true)
                     .childHandler(new ChannelInitializer<SocketChannel>() {
-                        // TODO:自定义handler
                         @Override
                         public void initChannel(SocketChannel ch) {
                             ch.pipeline()
-                                    //TODO:加入配置项
-                                    .addLast(new IdleStateHandler(30, 0, 0, TimeUnit.SECONDS))
+                                    //TODO:相关时延可加入配置项
+                                    .addLast(new IdleStateHandler(30, 0,
+                                            0, TimeUnit.SECONDS))
                                     .addLast(new ProtocolFrameDecoder())
                                     .addLast(new MessageSharableCodec())
                                     .addLast(new NettyPingMessageHandler())
                                     .addLast(serviceHandlerGroup, new NettyRpcRequestHandler());
                         }
                     });
-            final ChannelFuture channelFuture = serverBootstrap.bind(GlobalConstant.RPC_SERVICE_PORT).sync();
+            //TODO:绑定端口改为可配置
+            final ChannelFuture channelFuture = serverBootstrap.bind(GlobalConstant.DEFAULT_RPC_SERVICE_PORT).sync();
             channelFuture.channel().closeFuture().sync();
         } catch (InterruptedException e) {
-            log.error("Error occurs when starting server:", e);
+            log.error("Error occurs to the running server:", e);
         } finally {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
+            serviceHandlerGroup.shutdownGracefully();
+            RpcRuntime.addShutdownHook(() -> {
+                log.info("Shutting down compact-rpc...");
+                serviceManager.deregisterAllService();
+                log.info("Shut down successfully.");
+            });
         }
     }
 }

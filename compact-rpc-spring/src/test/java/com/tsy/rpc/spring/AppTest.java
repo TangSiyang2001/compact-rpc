@@ -27,7 +27,7 @@ public class AppTest {
 
     public static void main(String[] args) {
         final NettyRpcServer nettyRpcServer = new NettyRpcServer();
-        nettyRpcServer.start();
+        nettyRpcServer.run();
         final RequestSender netty = ExtensionLoader.getExtensionLoader(RequestSender.class).getExtension("netty");
     }
 }

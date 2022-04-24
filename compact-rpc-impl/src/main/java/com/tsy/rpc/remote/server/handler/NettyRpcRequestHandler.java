@@ -2,8 +2,8 @@ package com.tsy.rpc.remote.server.handler;
 
 import com.tsy.rpc.base.exception.InvokeMethodException;
 import com.tsy.rpc.base.factory.SingletonFactory;
-import com.tsy.rpc.manager.ServiceBeansManager;
-import com.tsy.rpc.manager.impl.DefaultServiceBeansManager;
+import com.tsy.rpc.manager.ServiceManager;
+import com.tsy.rpc.manager.impl.DefaultServiceManager;
 import com.tsy.rpc.message.RpcRequest;
 import com.tsy.rpc.message.RpcResponse;
 import io.netty.channel.ChannelFutureListener;
@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
 @Slf4j
 public class NettyRpcRequestHandler extends SimpleChannelInboundHandler<RpcRequest> {
 
-    private final ServiceBeansManager serviceBeansManager = SingletonFactory.getInstance(DefaultServiceBeansManager.class);
+    private final ServiceManager serviceManager = SingletonFactory.getInstance(DefaultServiceManager.class);
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, RpcRequest msg) {
@@ -36,7 +36,7 @@ public class NettyRpcRequestHandler extends SimpleChannelInboundHandler<RpcReque
 
     private Object doInvoke(RpcRequest msg, String serviceName) {
         //获取服务实例
-        final Object serviceInstance = serviceBeansManager.getServiceInstance(serviceName);
+        final Object serviceInstance = serviceManager.getServiceInstance(serviceName);
         //反射调用，得到服务结果
         try {
             final Method method = serviceInstance.getClass().getMethod(msg.getMethodName(), msg.getParamTypes());

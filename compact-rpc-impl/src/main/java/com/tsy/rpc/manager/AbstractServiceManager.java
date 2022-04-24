@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Steven.T
  * @date 2022/2/22
  */
-public abstract class AbstractServiceBeansManager implements ServiceBeansManager {
+public abstract class AbstractServiceManager implements ServiceManager {
     /**
      * 服务实例缓存
      */
@@ -34,6 +34,8 @@ public abstract class AbstractServiceBeansManager implements ServiceBeansManager
         registerService(serviceName);
         servicesCache.put(serviceName, config.getServiceInstance());
     }
+
+
 
     /**
      * 注册服务

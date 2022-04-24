@@ -6,7 +6,7 @@ import com.tsy.rpc.config.RpcServiceInfo;
  * @author Steven.T
  * @date 2022/2/22
  */
-public interface ServiceBeansManager {
+public interface ServiceManager {
 
     /**
      * 注册并缓存服务
@@ -22,4 +22,9 @@ public interface ServiceBeansManager {
      * @return 服务
      */
     Object getServiceInstance(String serviceName);
+
+    /**
+     * 移除服务
+     */
+    void deregisterAllService();
 }
