@@ -15,6 +15,7 @@ public abstract class AbstractServer {
 
     protected final ServiceManager serviceManager;
 
+
     protected AbstractServer() {
         serviceManager = SingletonFactory.getInstance(DefaultServiceManager.class);
     }

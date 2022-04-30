@@ -6,6 +6,10 @@ package com.tsy.rpc.base.runtime;
  */
 public class RpcRuntime {
 
+    private RpcRuntime() {
+
+    }
+
     /**
      * 获取cpu数目
      */
@@ -15,6 +19,7 @@ public class RpcRuntime {
 
     /**
      * 系统关闭时(关闭jvm时)增加处理任务
+     *
      * @param task 相关任务
      */
     public static void addShutdownHook(Runnable task) {

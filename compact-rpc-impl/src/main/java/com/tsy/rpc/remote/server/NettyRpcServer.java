@@ -4,7 +4,7 @@ import com.tsy.rpc.base.runtime.RpcRuntime;
 import com.tsy.rpc.base.thread.ThreadPoolManager;
 import com.tsy.rpc.codec.MessageSharableCodec;
 import com.tsy.rpc.codec.ProtocolFrameDecoder;
-import com.tsy.rpc.constant.GlobalConstant;
+import com.tsy.rpc.config.manager.RpcConfigExportor;
 import com.tsy.rpc.remote.server.handler.NettyPingMessageHandler;
 import com.tsy.rpc.remote.server.handler.NettyRpcRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
@@ -29,7 +29,6 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class NettyRpcServer extends AbstractServer {
 
-
     @Override
     public void run() {
         final NioEventLoopGroup bossGroup = new NioEventLoopGroup();
@@ -38,6 +37,11 @@ public class NettyRpcServer extends AbstractServer {
                 RpcRuntime.cpus() * 2,
                 ThreadPoolManager.getManager("service-handler-group").createThreadPool()
         );
+        RpcRuntime.addShutdownHook(() -> {
+            log.info("Shutting down compact-rpc...");
+            serviceManager.deregisterAllService();
+            log.info("Shut down successfully.");
+        });
         try {
             final ServerBootstrap serverBootstrap = new ServerBootstrap();
             serverBootstrap
@@ -60,8 +64,7 @@ public class NettyRpcServer extends AbstractServer {
                                     .addLast(serviceHandlerGroup, new NettyRpcRequestHandler());
                         }
                     });
-            //TODO:绑定端口改为可配置
-            final ChannelFuture channelFuture = serverBootstrap.bind(GlobalConstant.DEFAULT_RPC_SERVICE_PORT).sync();
+            final ChannelFuture channelFuture = serverBootstrap.bind(RpcConfigExportor.getServerPort()).sync();
             channelFuture.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             log.error("Error occurs to the running server:", e);
@@ -69,11 +72,6 @@ public class NettyRpcServer extends AbstractServer {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
             serviceHandlerGroup.shutdownGracefully();
-            RpcRuntime.addShutdownHook(() -> {
-                log.info("Shutting down compact-rpc...");
-                serviceManager.deregisterAllService();
-                log.info("Shut down successfully.");
-            });
         }
     }
 }

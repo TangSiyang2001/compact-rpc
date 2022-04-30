@@ -9,7 +9,16 @@ package com.tsy.rpc.base.config;
 public interface ConfigManager {
     //TODO:Impl包留下property、xml等实现，spring中加入application.properties,application.yml的实现
 
-    void loadConfig();
+    String getCodecType();
 
-    String getCodecAlgorithm();
+    String getCompressType();
+
+    int getServerPort();
+
+    String getRegistryHost();
+
+    int getRegistryPort();
+
+
+    void loadConfig();
 }

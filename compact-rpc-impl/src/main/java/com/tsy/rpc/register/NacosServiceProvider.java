@@ -5,6 +5,7 @@ import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.pojo.Instance;
 import com.tsy.rpc.base.exception.LoadServiceException;
+import com.tsy.rpc.config.manager.RpcConfigExportor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 
@@ -23,11 +24,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class NacosServiceProvider {
 
-    /**
-     * TODO:调整为可配置
-     */
-    private static final String SERVER_ADDRESS = "127.0.0.1:8848";
     private static final NamingService namingService;
+
     private static final Map<String, List<InetSocketAddress>> SERVICE_INSTANCES_MAP = new ConcurrentHashMap<>();
 
     static {
@@ -36,15 +34,16 @@ public class NacosServiceProvider {
 
     private static NamingService loadNamingService() {
         try {
-            return NamingFactory.createNamingService(SERVER_ADDRESS);
+            return NamingFactory.createNamingService(RpcConfigExportor.getRegistryHost() + ":"
+                    + RpcConfigExportor.getRegistryPort());
         } catch (NacosException e) {
             throw new LoadServiceException("Error occurs when loading server.");
         }
     }
 
-    public void registerInstance(String serviceName, String hostName,int port) throws NacosException {
+    public void registerInstance(String serviceName, String hostName, int port) throws NacosException {
         namingService.registerInstance(serviceName, hostName, port);
-        InetSocketAddress address =new InetSocketAddress(hostName,port);
+        InetSocketAddress address = new InetSocketAddress(hostName, port);
         List<InetSocketAddress> inetSocketAddresses;
         if (SERVICE_INSTANCES_MAP.containsKey(serviceName)) {
             inetSocketAddresses = SERVICE_INSTANCES_MAP.get(serviceName);
@@ -60,15 +59,15 @@ public class NacosServiceProvider {
         return namingService.getAllInstances(serviceName);
     }
 
-    public void deregisterInstance(String serviceName,String hostName,int port) throws NacosException {
-        namingService.deregisterInstance(serviceName,hostName,port);
+    public void deregisterInstance(String serviceName, String hostName, int port) throws NacosException {
+        namingService.deregisterInstance(serviceName, hostName, port);
     }
 
     public void clearAllRegistries() throws NacosException {
         if (MapUtils.isNotEmpty(SERVICE_INSTANCES_MAP)) {
             for (Map.Entry<String, List<InetSocketAddress>> entry : SERVICE_INSTANCES_MAP.entrySet()) {
                 for (InetSocketAddress address : entry.getValue()) {
-                    namingService.deregisterInstance(entry.getKey(),address.getHostName(), address.getPort());
+                    namingService.deregisterInstance(entry.getKey(), address.getHostName(), address.getPort());
                 }
             }
         }

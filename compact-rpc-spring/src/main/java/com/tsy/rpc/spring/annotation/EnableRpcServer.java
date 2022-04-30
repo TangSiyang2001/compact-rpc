@@ -1,6 +1,7 @@
 package com.tsy.rpc.spring.annotation;
 
 import com.tsy.rpc.remote.server.NettyRpcServer;
+import com.tsy.rpc.spring.config.SpringRpcConfigManager;
 import com.tsy.rpc.spring.extension.BeanDefinitionRegistrar;
 import com.tsy.rpc.spring.extension.ContextListener;
 import com.tsy.rpc.spring.extension.RpcServerBeanPostProcessor;
@@ -17,7 +18,7 @@ import java.lang.annotation.*;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@Import({BeanDefinitionRegistrar.class, NettyRpcServer.class, RpcServerBeanPostProcessor.class, ContextListener.class})
+@Import({BeanDefinitionRegistrar.class, NettyRpcServer.class, RpcServerBeanPostProcessor.class, ContextListener.class, SpringRpcConfigManager.class})
 public @interface EnableRpcServer {
     String value() default "";
 }
