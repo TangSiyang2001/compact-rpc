@@ -8,7 +8,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
  * Hello world!
  */
 @EnableRpcServer
-@RpcScan(basePackage = "com.tsy.rpc.test")
+@RpcScan(basePackages = "com.tsy.rpc.test")
 public class App {
     public static void main(String[] args) {
         //直接创建一个容器，由于标注了@EnableRpcServer，将会自动启动Rpc服务器

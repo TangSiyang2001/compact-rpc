@@ -17,4 +17,5 @@ public class SequenceIdUtils {
     public static int nextId(){
         return ID.getAndIncrement();
     }
+
 }

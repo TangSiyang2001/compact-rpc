@@ -18,6 +18,8 @@ import java.util.Map;
  */
 public class BeanDefinitionRegistrar implements ImportBeanDefinitionRegistrar, ResourceLoaderAware {
 
+    private static final String BASE_PACKAGES_ATTRIBUTE = "basePackages";
+
     private ResourceLoader resourceLoader;
 
     @Override
@@ -29,7 +31,7 @@ public class BeanDefinitionRegistrar implements ImportBeanDefinitionRegistrar, R
         String[] basePackages = new String[0];
         if (annotationAttributes != null) {
             //从注解信息中获取相应字段名对应的字符串数组
-            basePackages = annotationAttributes.getStringArray("basePackage");
+            basePackages = annotationAttributes.getStringArray(BASE_PACKAGES_ATTRIBUTE);
         }
         if (basePackages.length == 0) {
             //说明未配置包扫描路径，默认选用该注解标注的类同级的包路径

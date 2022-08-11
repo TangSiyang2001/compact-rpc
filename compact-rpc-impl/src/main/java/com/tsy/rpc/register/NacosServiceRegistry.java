@@ -18,7 +18,7 @@ import java.util.Objects;
 @Slf4j
 public class NacosServiceRegistry implements ServiceRegistry {
 
-    private final NacosServiceProvider serviceProvider = SingletonFactory.getInstance(NacosServiceProvider.class);
+    private final NacosServiceAdapter serviceProvider = SingletonFactory.getInstance(NacosServiceAdapter.class);
 
     @Override
     public void registerService(String serviceName, InetSocketAddress inetSocketAddress) {

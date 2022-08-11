@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2022/2/20
  */
 @Slf4j
-public class NacosServiceProvider {
+public class NacosServiceAdapter {
 
     private static final NamingService namingService;
 

@@ -22,7 +22,7 @@ public class NacosServiceDiscovery implements ServiceDiscovery {
 
     private LoadBalancer loadBalancer;
 
-    private final NacosServiceProvider serviceProvider = SingletonFactory.getInstance(NacosServiceProvider.class);
+    private final NacosServiceAdapter serviceProvider = SingletonFactory.getInstance(NacosServiceAdapter.class);
 
     public NacosServiceDiscovery(){
         this.loadBalancer = ExtensionLoader.getExtensionLoader(LoadBalancer.class).getExtension("loadbalance");
