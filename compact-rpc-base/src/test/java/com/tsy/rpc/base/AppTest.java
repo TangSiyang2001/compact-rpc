@@ -1,7 +1,7 @@
 package com.tsy.rpc.base;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 /**
  * Unit test for simple App.
