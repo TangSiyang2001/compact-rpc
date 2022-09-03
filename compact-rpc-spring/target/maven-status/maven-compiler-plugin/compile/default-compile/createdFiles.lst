@@ -1,9 +1,0 @@
-com\tsy\rpc\spring\extension\BeanDefinitionRegistrar.class
-com\tsy\rpc\spring\annotation\EnableRpcServer.class
-com\tsy\rpc\spring\annotation\RpcScan.class
-com\tsy\rpc\spring\extension\PackageScanner.class
-com\tsy\rpc\spring\config\SpringRpcConfigManager.class
-com\tsy\rpc\spring\extension\RpcClientBeanPostProcessor.class
-com\tsy\rpc\spring\annotation\EnableRpcClient.class
-com\tsy\rpc\spring\extension\ContextListener.class
-com\tsy\rpc\spring\extension\RpcServerBeanPostProcessor.class

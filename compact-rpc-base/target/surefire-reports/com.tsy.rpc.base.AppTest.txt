@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.tsy.rpc.base.AppTest
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.822 s - in com.tsy.rpc.base.AppTest
